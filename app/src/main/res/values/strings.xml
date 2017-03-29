@@ -6,4 +6,6 @@
 
     <string name="inicio">Inicio</string>
     <string name="Lugares">Lugares</string>
+     <string name="action_settings">Config</string>
+    <string name="acerca_de_nosotros">Acerca de nosotros</string>
 </resources>
