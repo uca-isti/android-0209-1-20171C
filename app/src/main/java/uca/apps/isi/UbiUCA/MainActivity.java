@@ -16,6 +16,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import uca.apps.isi.UbiUCA.Frangments.InicioFragment;
+import uca.apps.isi.UbiUCA.Frangments.LugaresFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
             fragmentManager.beginTransaction().replace(R.id.contenedor, new InicioFragment()).commit();
         } else if (id == R.id.lugares) {
-
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new LugaresFragment()).commit();
         } else if (id == R.id.acerca_de_nosotros) {
 
         } else if (id == R.id.nav_manage) {
