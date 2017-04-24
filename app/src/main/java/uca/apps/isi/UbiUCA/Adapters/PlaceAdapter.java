@@ -1,6 +1,9 @@
 package uca.apps.isi.UbiUCA.Adapters;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -16,9 +19,12 @@ import uca.apps.isi.UbiUCA.R;
 
 public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> {
     private List<Place> lugares;
+    uca.apps.isi.UbiUCA.Models.Location location;
+    //private SimpleLocation location;
 
-    public PlaceAdapter(List<Place> lugares) {
+    public PlaceAdapter(List<Place> lugares, uca.apps.isi.UbiUCA.Models.Location location) {
         this.lugares = lugares;
+        this.location = location;
     }
 
     @Override
@@ -44,6 +50,23 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
         return lugares.size();
     }
 
+    public void resume(){
+        /*if (location != null){
+            location.beginUpdates();
+            System.out.println("ACTUALIZAR LOCACION");
+        }
+        else
+            System.out.print("Location es NULL");*/
+    }
+
+    public void pause(){
+       /* if (location != null){
+            location.endUpdates();
+            System.out.println("PAUSAR LOCACION");
+        }
+        else
+            System.out.print("Location es NULL");*/
+    }
 
     class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener
     {
@@ -73,9 +96,38 @@ public class PlaceAdapter extends RecyclerView.Adapter<PlaceAdapter.ViewHolder> 
         }
 
         @Override
-        public boolean onLongClick(View view) {
-            Toast.makeText(view.getContext(), "click Long sobre el lugar: "+place.getName(), Toast.LENGTH_SHORT).show();
+        public boolean onLongClick(final View view) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(view.getContext());
+            builder.setTitle("Ir al lugar");
+            builder.setMessage("¿Desea ir al sitio seleccionado?");
+            builder.setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    verLugarNuestro(view);
+                }
+            });
+            builder.setNegativeButton("cancelar", null);
+            Dialog dialog = builder.create();
+            dialog.show();
             return true;
+        }
+        public void verLugarNuestro(View view){
+            Toast.makeText(view.getContext(), "Ir a: "+place.getName(), Toast.LENGTH_SHORT).show();
+
+            /*location = new SimpleLocation(view.getContext());
+            // if we can't access the location yet
+            if (!location.hasLocationEnabled()) {
+                // ask the user to enable location access
+                SimpleLocation.openSettings(view.getContext());
+            }
+
+            final double latitude = location.getLatitude();
+            final double longitude = location.getLongitude();*/
+            final double latitude = location.getLat();
+            final double longitude = location.getLng();
+            System.out.println("latitud: "+latitude+", longitud: "+longitude);
+            Toast.makeText(view.getContext(), "Nuestra Posicion:\nlatitud: "+latitude+"\nlongitud: "+longitude
+                    , Toast.LENGTH_LONG).show();
         }
     }
 }

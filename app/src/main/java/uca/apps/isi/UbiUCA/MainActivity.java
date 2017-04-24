@@ -1,5 +1,6 @@
 package uca.apps.isi.UbiUCA;
 
+import android.location.Location;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -15,15 +16,41 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.akhgupta.easylocation.EasyLocationAppCompatActivity;
+import com.akhgupta.easylocation.EasyLocationRequest;
+import com.akhgupta.easylocation.EasyLocationRequestBuilder;
+import com.google.android.gms.location.LocationRequest;
+
 import uca.apps.isi.UbiUCA.Frangments.InicioFragment;
 import uca.apps.isi.UbiUCA.Frangments.LugaresFragment;
 
-public class MainActivity extends AppCompatActivity
+public class MainActivity extends EasyLocationAppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
-
+    private uca.apps.isi.UbiUCA.Models.Location loc;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // init location
+        LocationRequest locationRequest = new LocationRequest()
+                .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+                .setInterval(5000)
+                .setFastestInterval(5000);
+
+
+        EasyLocationRequest easyLocationRequest = new EasyLocationRequestBuilder()
+                .setLocationRequest(locationRequest)
+                .setLocationPermissionDialogTitle(getString(R.string.location_permission_dialog_title))
+                .setLocationPermissionDialogMessage(getString(R.string.location_permission_dialog_message))
+                .setLocationPermissionDialogNegativeButtonText("No por ahora")
+                .setLocationPermissionDialogPositiveButtonText("Si")
+                .setLocationSettingsDialogTitle(getString(R.string.location_services_off))
+                .setLocationSettingsDialogMessage(getString(R.string.open_location_settings))
+                .setLocationSettingsDialogNegativeButtonText("No por ahora")
+                .setLocationSettingsDialogPositiveButtonText("Si")
+                .build();
+
+        requestSingleLocationFix(easyLocationRequest);
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -91,7 +118,7 @@ public class MainActivity extends AppCompatActivity
             // Handle the camera action
             fragmentManager.beginTransaction().replace(R.id.contenedor, new InicioFragment()).commit();
         } else if (id == R.id.lugares) {
-            fragmentManager.beginTransaction().replace(R.id.contenedor, new LugaresFragment()).commit();
+            fragmentManager.beginTransaction().replace(R.id.contenedor, new LugaresFragment(loc)).commit();
         } else if (id == R.id.acerca_de_nosotros) {
 
         } else if (id == R.id.nav_manage) {
@@ -105,5 +132,32 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+
+    @Override
+    public void onLocationPermissionGranted() {
+
+    }
+
+    @Override
+    public void onLocationPermissionDenied() {
+
+    }
+
+    @Override
+    public void onLocationReceived(Location location) {
+        loc = new uca.apps.isi.UbiUCA.Models.Location(location.getLatitude(), location.getLongitude());
+    }
+
+    @Override
+    public void onLocationProviderEnabled() {
+
+    }
+
+    @Override
+    public void onLocationProviderDisabled() {
+
     }
 }

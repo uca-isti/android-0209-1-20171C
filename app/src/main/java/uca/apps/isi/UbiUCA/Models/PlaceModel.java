@@ -1,22 +1,26 @@
 package uca.apps.isi.UbiUCA.Models;
 
 
-import io.realm.RealmObject;
+import com.google.gson.annotations.SerializedName;
 
-public class Place extends RealmObject{
+public class PlaceModel{
     private String name;
-    private uca.apps.isi.UbiUCA.Models.Location location;
+    @SerializedName("location")
+    private LocationModel location;
 
     public String getName() {
         return name;
     }
+
     public void setName(String name) {
         this.name = name;
     }
-    public Location getLocation() {
+
+    public LocationModel getLocation() {
         return location;
     }
-    public void setLocation(Location location) {
+
+    public void setLocation(LocationModel location) {
         this.location = location;
     }
 }

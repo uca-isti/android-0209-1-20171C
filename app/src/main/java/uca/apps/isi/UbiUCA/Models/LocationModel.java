@@ -1,18 +1,8 @@
 package uca.apps.isi.UbiUCA.Models;
 
-import io.realm.RealmObject;
-
-public class Location extends RealmObject{
+public class LocationModel {
     private double lat;
     private double lng;
-
-    public Location(double lat, double lng) {
-        this.lat = lat;
-        this.lng = lng;
-    }
-
-    public Location() {
-    }
 
     public Double getLng() {
         return lng;
